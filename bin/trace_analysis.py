@@ -6,7 +6,7 @@ Date: Thursday, February  7 2013
 Description: Check trace properties.
 """
 
-import cPickle as pickle
+import pickle as pickle
 import numpy as np
 import pylab
 import numpy.linalg as la

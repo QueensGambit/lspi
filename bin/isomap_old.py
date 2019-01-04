@@ -23,7 +23,7 @@ def list_components(adj):
     for row in adj:
         groups[str(row)] = row
 
-    return [np.nonzero(row)[0] for row in groups.values()]
+    return [np.nonzero(row)[0] for row in list(groups.values())]
 
 def flatidx(idx):
     adds = np.arange(0, len(idx) ** 2, len(idx))
@@ -52,7 +52,7 @@ def cluster_graph(d, fnc = 'k', size = 7, graph = 'adjacency'):
 
     if fnc == 'k':
         if not type(size) == int:
-            raise TypeError, "Size must be an integer"
+            raise TypeError("Size must be an integer")
         else:
             # sort to find initial k clusters
             idx = np.argsort(ld)
@@ -62,11 +62,11 @@ def cluster_graph(d, fnc = 'k', size = 7, graph = 'adjacency'):
 
     elif fnc == 'epsilon':
         if not type(size) == float:
-            raise TypeError, "Size must be a float"
+            raise TypeError("Size must be a float")
         else:
             ld = np.where(np.less(ld, size), ld, fpconst.PosInf)
     else:
-        raise ValueError, "Unknown fnc type"
+        raise ValueError("Unknown fnc type")
 
     # ensure that the result is symmetric
     ld = np.minimum(ld, np.transpose(ld))
@@ -77,7 +77,7 @@ def cluster_graph(d, fnc = 'k', size = 7, graph = 'adjacency'):
         """ Return the shortest paths. """
         return shortest_paths(ld)
     else:
-        raise ValueError, "Unknown graph type!"
+        raise ValueError("Unknown graph type!")
 
 def shortest_paths(adj, alg = "Floyd1"):
     (n,m) = adj.shape
@@ -91,12 +91,12 @@ def shortest_paths(adj, alg = "Floyd1"):
             adj = np.minimum(adj, np.tile(adj[:,k].reshape(-1,1),(1,n)) + np.tile(adj[k,:],(n,1)))
         return adj
     else:
-        raise Error, "Not implemented"
+        raise Error("Not implemented")
 
 def isomap(d, fnc = 'k', size = 7, dimensions = 2):
     """ Compute isomap instead of mds. Currently neighborhoods of type k are supported. """
     if not len(d.shape) == 2:
-        raise ValueError, "d must be a square matrix"
+        raise ValueError("d must be a square matrix")
 
     # the put operation is destructive to d
     ld = cluster_graph(d, fnc = fnc, size = size, graph = 'distance')
@@ -143,7 +143,7 @@ def test():
 def main():
 
     def usage():
-	print sys.argv[0] + "[-h] [-d]"
+	print(sys.argv[0] + "[-h] [-d]")
 
     try:
         (options, args) = getopt.getopt(sys.argv[1:], 'dh', ['help','debug'])

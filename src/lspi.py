@@ -13,10 +13,10 @@ import random as pr
 import numpy.linalg as la
 import sys
 import pickle
-from lstdq import *
-from utils import debugflag, timerflag, consumer
+from build.lib.lspi.lstdq import *
+from build.lib.lspi.utils import debugflag, timerflag, consumer
 import scipy.sparse as sp
-from trackknown import TrackKnown
+from build.lib.lspi.trackknown import TrackKnown
 from functools import partial
 
 class Diagnostics:
@@ -74,7 +74,7 @@ def LSPIRmax(D, epsilon, env, policy0, method = "dense", maxiter = 10, resample_
 
     while iters < maxiter and not finished:
 
-        print "Iterations: ", iters
+        print("Iterations: ", iters)
         all_policies.append(current)
 
         start_time = time.time()
@@ -83,27 +83,27 @@ def LSPIRmax(D, epsilon, env, policy0, method = "dense", maxiter = 10, resample_
         elif method is "parallel":
             A,b,current,info = ParallelLSTDQRmax(track, env, current, rmax=rmax)
         else:
-            raise ValueError, "Unknown LSTDQ method!"
+            raise ValueError("Unknown LSTDQ method!")
         end_time = time.time()
-        print "Loop time: ", end_time - start_time
+        print("Loop time: ", end_time - start_time)
 
         policy = partial(env.epsilon_linear_policy, resample_epsilon, current) # need to detect/escape cycles?
         
         # more trace data
         t = env.trace(1000, policy = policy, reset_on_cycle = False, reset_on_endstate = False, stop_on_cycle=True)
-        print "Trace length: ", len(t)
+        print("Trace length: ", len(t))
         track.extend(t, take_all=False) # adds new samples
         track.diagnostics()
 
         if show:
-            print diagnostics(iters,current,A)
+            print(diagnostics(iters,current,A))
 
         iters += 1
 
         for p in all_policies:
             if la.norm(p - current) < epsilon and track.all_known():  
                 finished = True
-                print "Finished"
+                print("Finished")
 
     return current, all_policies
 
@@ -136,15 +136,15 @@ def LSPI(D, epsilon, env, policy0, method="dense", save=False, maxiter=10, show=
         elif method is "parallel":
             A,b,current,info = ParallelLSTDQ(D, env, current, ncpus=ncpus)
         else:
-            raise ValueError, "Unknown method!"
+            raise ValueError("Unknown method!")
 
         if save:
             pickle.dump(current,fp,pickle.HIGHEST_PROTOCOL)
 
         if show:
-            print diagnostics(iters,current,A)
+            print(diagnostics(iters,current,A))
             for (i,p) in enumerate(all_policies):
-                print "policy: ", i, la.norm(p - current)
+                print("policy: ", i, la.norm(p - current))
 
         # In general, epsilon should not be treated as a constant. It should
         # depend at least on cond(A) for the current iteration of LSTDQ. Note
@@ -170,14 +170,14 @@ def test():
     try:
         from gridworld.chainwalk import Chainwalk
     except:
-        print "Unable to import Chainwalk for test!"
+        print("Unable to import Chainwalk for test!")
         return
 
     cw = Chainwalk()
     trace = cw.trace()
     zeros = np.zeros(cw.nfeatures())
     w = LSPI(trace,0.0001,cw,zeros,show=True)
-    print w
+    print(w)
 
 if __name__ == '__main__':
 

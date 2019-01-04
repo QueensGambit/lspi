@@ -13,10 +13,10 @@ import numpy.random as npr
 import random as pr
 import numpy.linalg as la
 from multiprocessing import Pool, Queue, Process, log_to_stderr, SUBDEBUG, cpu_count
-from utils import sp_create,chunk,sp_create_dict
+from .utils import sp_create,chunk,sp_create_dict
 import sys
 import time
-from trackknown import TrackKnown
+from .trackknown import TrackKnown
 
 import scipy.sparse as sp
 import scipy.sparse.linalg as spla
@@ -42,19 +42,19 @@ def compare(method1, method2, *args):
 
     # Note: if testing Opt method may need to create a wrapper method that inverts B prior to the method call
     if not allclose(A,C):
-        print "***** (A,C) are not CLOSE! *****"
+        print("***** (A,C) are not CLOSE! *****")
     else:
-        print "(A,C) are close!"
+        print("(A,C) are close!")
 
     if not allclose(b,d):
-        print "****** (b,d) are not CLOSE! *****"
+        print("****** (b,d) are not CLOSE! *****")
     else:
-        print "(b,d) are close!"
+        print("(b,d) are close!")
 
     if not allclose(x, y):
-        print "****** (x,y) are not CLOSE! *****"
+        print("****** (x,y) are not CLOSE! *****")
     else:
-        print "(x,y) are close!"
+        print("(x,y) are close!")
 
     # dump stuff out here if needed
 
@@ -92,7 +92,7 @@ def solve(A, b, method="pinv"):
         w = qr_result
     
     else:
-        raise ValueError, "Unknown solution method!"
+        raise ValueError("Unknown solution method!")
 
     return w,info
 
@@ -119,7 +119,7 @@ def dict_loop(D,env,w,damping=0.001):
     Speedy and memory efficient.
     """
     k = len(w)
-    A = {(i,i) : damping for i in xrange(k)}
+    A = {(i,i) : damping for i in range(k)}
     b = {}
 
     for (s,a,r,ns,na) in D:
@@ -129,11 +129,11 @@ def dict_loop(D,env,w,damping=0.001):
 
         # for 1-dim array on vals, rows matter
         nf = features.copy()
-        for i,v in newfeatures.items():
+        for i,v in list(newfeatures.items()):
             nf[i] = nf.get(i,0) - env.gamma * v
 
-        for i,v1 in features.items():
-            for j,v2 in nf.items():
+        for i,v1 in list(features.items()):
+            for j,v2 in list(nf.items()):
                 A[i,j] = A.get((i,j), 0) +  v1 * v2
             b[i] = b.get(i,0) + v1 * r
 
@@ -279,7 +279,7 @@ def drmax_loop(D, env, w, damping=0.001, rmax=1.0):
     Dictionary rmax loop.
     """
     k = len(w)
-    A = {(i,i) : damping for i in xrange(k)}
+    A = {(i,i) : damping for i in range(k)}
     b = {}
     grmax = rmax / (1.0 - env.gamma)
 
@@ -291,32 +291,32 @@ def drmax_loop(D, env, w, damping=0.001, rmax=1.0):
             newfeatures = env.phi(ns, next, sparse=True, format='rawdict')
 
             nf = features.copy()
-            for i,v in newfeatures.items():
+            for i,v in list(newfeatures.items()):
                 nf[i] = nf.get(i,0) - env.gamma * v
 
-            for i,v1 in features.items():
-                for j,v2 in nf.items():
+            for i,v1 in list(features.items()):
+                for j,v2 in list(nf.items()):
                     A[i,j] = A.get((i,j), 0) +  v1 * v2
                 b[i] = b.get(i,0) + v1 * r
 
         elif D.known_pair(s,a):
             features = env.phi(s, a, sparse=True, format='rawdict')
-            for i,v1 in features.items():
-                for j,v2 in features.items():
+            for i,v1 in list(features.items()):
+                for j,v2 in list(features.items()):
                     A[i,j] = A.get((i,j), 0) + v1 * v2
                 b[i] = b.get(i,0) + v1 * (r + env.gamma * grmax)
         
         else:            
             features = env.phi(s, a, sparse=True, format='rawdict')
-            for i,v1 in features.items():
-                for j,v2 in features.items():
+            for i,v1 in list(features.items()):
+                for j,v2 in list(features.items()):
                     A[i,j] = A.get((i,j), 0) + v1 * v2
                 b[i] = b.get(i,0) + v1 * grmax
 
         for una in D.unknown(s):
             features = env.phi(s, una, sparse=True, format='rawdict')
-            for i,v1 in features.items():
-                for j,v2 in features.items():
+            for i,v1 in list(features.items()):
+                for j,v2 in list(features.items()):
                     A[i,j] = A.get((i,j), 0) + v1 * v2
                 b[i] = b.get(i,0) + v1 * grmax
 
@@ -368,7 +368,7 @@ def FastLSTDQ(D,env,w,damping=0.001):
     damping : keeps the result relatively stable 
     """
     A,b = dict_loop(D,env,w,damping)
-    print "Feature Sparsity: ", env.get_sparsity()
+    print("Feature Sparsity: ", env.get_sparsity())
     w,info = solve(A,b,method="spsolve")
     return A,b,w,info
 
@@ -494,7 +494,7 @@ def ParallelLSTDQ(D,env,w,damping=0.001,ncpus=None):
 if __name__ == '__main__':
 
     from gridworld.gridworld8 import SparseGridworld8
-    import cPickle as pickle
+    import pickle as pickle
 
     gw = SparseGridworld8(nrows = 5, ncols = 5, endstates = [0], walls = [])
     t = pickle.load(open("/Users/stober/wrk/lspi/bin/rmax_trace.pck"))

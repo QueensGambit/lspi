@@ -71,4 +71,4 @@ class TrackKnown:
 
     def diagnostics(self):
         states, actions = np.nonzero(self.counts < self.mcount)
-        print "Unknown states: ", len(np.unique(states))
+        print("Unknown states: ", len(np.unique(states)))

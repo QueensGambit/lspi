@@ -6,7 +6,7 @@ Date: Saturday, March 23 2013
 Description: plot stuff
 """
 
-import cPickle as pickle
+import pickle as pickle
 import bz2
 import pylab
 import pylab
@@ -53,7 +53,7 @@ errs = []
 areward = []
 projections = []
 for i in range(13):
-    print i
+    print(i)
     fp = open('misc{0}.pck'.format(i))
     stuff = pickle.load(fp)
     (iters, err, gt, avg_reward, current, y, s, adj) = stuff 
@@ -64,7 +64,7 @@ for i in range(13):
 if False: 
 
     ogw = RBFObserverGridworld("/Users/stober/wrk/lspi/bin/16/20comp.npy", "/Users/stober/wrk/lspi/bin/16/states.npy", endstates = [272], walls=None, nrbf=80)
-    pts = np.array(ogw.states.values())
+    pts = np.array(list(ogw.states.values()))
     colors = create_norm_colors(pts)
 
     pylab.scatter(pts[:, 0], pts[:, 1], c=colors)
@@ -135,12 +135,12 @@ if False:
 
 if True:
     ogw = RBFObserverGridworld('/Users/stober/wrk/lspi/bin/16/20comp.npy', '/Users/stober/wrk/lspi/bin/16/states.npy', endstates = [272], walls=None, nrbf=80)
-    pts = np.array(ogw.states.values())
+    pts = np.array(list(ogw.states.values()))
     colors = create_norm_colors(pts)
 
     comps = np.load('/Users/stober/wrk/lspi/bin/16/5comp.npy')
     
-    print procrustes(pts, comps[:,:2])
+    print(procrustes(pts, comps[:,:2]))
 
     pylab.clf()
     pylab.title('PCA Embedding')

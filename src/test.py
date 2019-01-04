@@ -23,7 +23,7 @@ class Test(object):
         super(Test, self).__init__()
         self.arg1 = np.zeros(100)
         self.arg2 = 15.0
-        self.arg3 = range(100)
+        self.arg3 = list(range(100))
 
     def __getitem__(self,key):
         new = copy.copy(self)
@@ -34,21 +34,21 @@ def main():
     t = Test()
     l = t[3:15]
 
-    print t.arg3
-    print l.arg3
+    print(t.arg3)
+    print(l.arg3)
 
     l.arg3[0] = 0
 
-    print t.arg3
-    print l.arg3
+    print(t.arg3)
+    print(l.arg3)
 
     l.arg2 = 5.0
-    print t.arg2
-    print l.arg2
+    print(t.arg2)
+    print(l.arg2)
 
     l.arg1[0] =  1000
-    print t.arg1
-    print l.arg1
+    print(t.arg1)
+    print(l.arg1)
 
 if __name__ == '__main__':
     main()

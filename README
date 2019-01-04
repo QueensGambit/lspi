@@ -1,4 +1,4 @@
-Least Squares Policy Iteration in Python
+Least Squares Policy Iteration in Python 3 (converted from Python 2)
 
 Author: Jeremy Stober
 Contact: stober@gmail.com
@@ -8,7 +8,7 @@ This is a Python implementation of LSPI from Lagoudakis and Parr in
 JMLR (2003). The code depends on having an environment that provides a
 function phi for generating features from state-action pairs, and a
 function linear_policy for evaluating the policy. The gridworld
-package (https://github.com/stober/gridworld) provides example
+package (https://github.com/QueensGambit/gridworld) provides example
 environments. Both lspi.py and lstdq.py contain example code using a
 simple chainworld environment from the original paper (included in the
 gridworld package).

@@ -168,11 +168,11 @@ def write_spda_file_slack(filename, m, nblocks, size, c, indx, omega):
 def test_embedding(orig_pts, new_pts, indx):
     # compare the embedded distances to the new distances for the embedded pts
 
-    print orig_pts.shape, new_pts.shape
+    print(orig_pts.shape, new_pts.shape)
     for (i,j) in indx:
-        print i,j
-        print (orig_pts[i] - orig_pts[j]).shape, (new_pts[:,i] - new_pts[:,j]).shape
-        print la.norm(orig_pts[i] - orig_pts[j]), la.norm(new_pts[:,i] - new_pts[:,j])
+        print(i,j)
+        print((orig_pts[i] - orig_pts[j]).shape, (new_pts[:,i] - new_pts[:,j]).shape)
+        print(la.norm(orig_pts[i] - orig_pts[j]), la.norm(new_pts[:,i] - new_pts[:,j]))
 
 def MVU_slack(datafile, dim = 3):
     # takes in a pickled matrix of points - outputs a MVU embedding

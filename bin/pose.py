@@ -11,10 +11,10 @@ from lspi import LSPI
 import numpy as np
 from functools import partial
 import pdb
-import cPickle as pickle
+import pickle as pickle
 
 def callback(iters, current, env):
-    print 'Callback: ', iters
+    print('Callback: ', iters)
 
     # get all traces
     traces = env.evaluate_policy(current)
@@ -29,8 +29,8 @@ def callback(iters, current, env):
         p_avg_length += len(t)
     p_avg_reward = p_avg_reward / float(len(perfect))
     p_avg_length = p_avg_length / float(len(perfect))
-    print "Perfect: ", p_avg_reward
-    print "Perfect: ", p_avg_length
+    print("Perfect: ", p_avg_reward)
+    print("Perfect: ", p_avg_length)
 
     # measure task performance
     avg_reward = 0
@@ -40,8 +40,8 @@ def callback(iters, current, env):
         avg_length += len(t)
     avg_reward = avg_reward / float(len(traces))
     avg_length = avg_length / float(len(traces))
-    print 'Avg reward: ', avg_reward
-    print "Avg length: ", avg_length
+    print('Avg reward: ', avg_reward)
+    print("Avg length: ", avg_length)
     pickle.dump((avg_reward,avg_length,p_avg_reward,p_avg_length), open('pose/pose_reward{0}.pck'.format(iters),'w'), pickle.HIGHEST_PROTOCOL)
 
 
@@ -54,4 +54,4 @@ w0, weights0 = LSPI(t, 0.0001, gw, policy0, maxiter=100, method="sparse", show=T
 policy = partial(gw.linear_policy, w0)
 #pdb.set_trace()
 t2 = gw.trace(1000, policy=policy, reset_on_endstate=True)
-print t2
+print(t2)

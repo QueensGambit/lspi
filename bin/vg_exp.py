@@ -32,12 +32,12 @@ def cnt_rewards(t):
 # for w in weights0:
 for w in weights0:
     traces = v.evaluate_policy(w)
-    print cnt_rewards(traces)
+    print(cnt_rewards(traces))
 perfect = v.evaluate_func_policy(v.perfect_policy)
 random = v.evaluate_func_policy(v.random_policy)
 # print cnt_rewards(traces)
-print cnt_rewards(perfect)
-print cnt_rewards(random)
+print(cnt_rewards(perfect))
+print(cnt_rewards(random))
 
 # test points
 
@@ -45,7 +45,7 @@ action_traces = []
 for i in [91,93,95,97]:
     action_traces.append([j[1] for j in v.single_episode(policy, start=i)])
 
-print action_traces
+print(action_traces)
 
 def costf(a,b):
     return np.abs(a-b)
@@ -69,7 +69,7 @@ for i in range(4):
         lbl = "Closest Object"
     else:
         lbl = "None"
-    print lbl
+    print(lbl)
     pts.append(pylab.scatter([y[i,0]],[y[i,1]],c=colors[i],label=lbl))
 # pylab.gca().set_xticklabels([])
 pylab.gca().set_yticklabels([])

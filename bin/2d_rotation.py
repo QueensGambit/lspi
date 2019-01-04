@@ -9,7 +9,7 @@ NOTE: I seem to have created trace_analysis.py to handle this.
 """
 import pdb
 import os
-import cPickle as pickle
+import pickle as pickle
 import numpy as np
 import functools
 from gridworld.gridworldgui import RBFObserverGridworldGui
@@ -41,7 +41,7 @@ def modify_endstates(t,old_endstates, new_endstates, action_costs = False):
     return new_trace
 
 def callback(iters, current, env):
-    print 'Callback: ', iters
+    print('Callback: ', iters)
 
     # get all traces
     env.updategui = False
@@ -55,7 +55,7 @@ def callback(iters, current, env):
     for t in traces:
         avg_reward += sum([i[2] for i in t])
     avg_reward = avg_reward / float(len(traces))
-    print 'Avg reward: ', avg_reward
+    print('Avg reward: ', avg_reward)
 
 
     # find current embedding
@@ -67,7 +67,7 @@ def callback(iters, current, env):
     y,s,adj = isomap(ematrix)
     if len(y) < 512:
         # fallback to mds if more than 1 connected component
-        print "More than 1 CC - Falling back to MDS"
+        print("More than 1 CC - Falling back to MDS")
         y,s = mds(ematrix)
         adj = None
 
@@ -81,7 +81,7 @@ def callback(iters, current, env):
     # procrustes error
     gt = env.coords_array()
     err = procrustes(gt, y)
-    print "Procrustes ", err
+    print("Procrustes ", err)
 
     pickle.dump((iters, err, gt, avg_reward, current, y, s, adj), open('misc{0}.pck'.format(iters),'w'), pickle.HIGHEST_PROTOCOL)
 
@@ -128,7 +128,7 @@ if __name__ == '__main__':
         result = ogw.test(policy)
         sucesses = []
         failures = []
-        for (i,r) in result.items():
+        for (i,r) in list(result.items()):
             if r:
                 sucesses.append(i)
             else:

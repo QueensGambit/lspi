@@ -5,7 +5,7 @@ Program: TRACE_ANALYSIS.PY
 Date: Tuesday, April  2 2013
 Description: Plot trace data.
 """
-import cPickle as pickle
+import pickle as pickle
 import numpy as np
 import pylab
 from gridworld.gridworld8 import RBFObserverGridworld
@@ -28,7 +28,7 @@ def translate_states(hist):
     ogw = RBFObserverGridworld("/Users/stober/wrk/lspi/bin/16/20comp.npy", "/Users/stober/wrk/lspi/bin/16/states.npy", endstates = [0], walls=None, nrbf=80)
     result = {}
 
-    for k,v in hist.items():
+    for k,v in list(hist.items()):
         coords = ogw.states[k]
         result[coords] = v
 
@@ -36,7 +36,7 @@ def translate_states(hist):
 
 def plot_2d_histogram(hist,i):
     values = np.zeros((16,32))
-    for k,v in hist.items():
+    for k,v in list(hist.items()):
         values[k[0],k[1]] = v
     #pylab.clf()
     pylab.imshow(values)

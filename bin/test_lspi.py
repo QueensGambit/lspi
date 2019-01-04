@@ -22,7 +22,7 @@ from lspi import FastLSTDQ
 from lspi import OptLSTDQ
 from lspi import LSPIRmax
 from td import Sarsa
-import cPickle as pickle
+import pickle as pickle
 import numpy.linalg as la
 from utils import create_cluster_colors_rgb, find_duplicates
 import os
@@ -47,7 +47,7 @@ def compare_all_phi(gw):
     for s in gw.states:
         for a in gw.actions:
             data.append(gw.phi(s,a))
-    print find_duplicates(data).next() # stop iteration?
+    print(next(find_duplicates(data))) # stop iteration?
 
 if test_rmax:
     gw = GridworldGui(nrows = 5, ncols = 5, endstates = [0], walls = [])
@@ -112,7 +112,7 @@ if test_chainwalk:
     cw = Chainwalk()
     t = cw.trace(1000)
     policy0 = np.zeros(cw.nfeatures())
-    print LSTDQ(t, cw, policy0)
+    print(LSTDQ(t, cw, policy0))
 
 if test_scale:
     gw = GridworldGui(nrows=64,ncols=64, size=8, endstates = [0], walls=[])
@@ -235,19 +235,19 @@ if test_realpca:
         result = ogw.test(policy)
         sucesses = []
         failures = []
-        for (i,r) in result.items():
+        for (i,r) in list(result.items()):
             if r:
                 sucesses.append(i)
             else:
                 failures.append(i)
 
-        print sucesses
-        print failures
+        print(sucesses)
+        print(failures)
 
         pi = [ogw.linear_policy(policy0,s) for s in range(ogw.nstates)]
         ogw.set_arrows(pi)   
         s = np.zeros(ogw.nstates)
-        for (l,i) in result.items():
+        for (l,i) in list(result.items()):
             s[l] = i
         ogw.set_heatmap(s) 
     
@@ -305,7 +305,7 @@ if test_alias:
     aliases = {}
     for c in cc:
         aliases[min(c)] = set(c)
-    print aliases
+    print(aliases)
 
 
     #gw = AliasGridworldGui(nrows=32,ncols=64,endstates=endstates,walls=[],aliases=aliases)
@@ -320,7 +320,7 @@ if test_alias:
     policy0 = np.zeros(gw.nfeatures())
     nclusters = len(aliases)
     colors = create_cluster_colors_rgb(nclusters,False)
-    print colors
+    print(colors)
 
     colormap = {}
     for i,cc in enumerate(aliases.values()):
@@ -334,7 +334,7 @@ if test_alias:
     try:
         pickle.dump(w0,open("weights.pck","w"),pickle.HIGHEST_PROTOCOL)
     except:
-        print "Save failed!"
+        print("Save failed!")
 
     pi = [gw.linear_policy(w0,s) for s in range(gw.nstates)]
     gw.set_arrows(pi)    

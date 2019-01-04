@@ -17,7 +17,7 @@ from gridworld.gridworld8 import ObserverGridworld
 from gridworld.gridworldgui import GridworldGui
 from lspi import LSPI
 from lspi import LSPIRmax
-import cPickle as pickle
+import pickle as pickle
 from sdp import write_spda_file, read_sol_file
 import pylab
 from isomap import shortest_paths, cluster_graph
@@ -55,7 +55,7 @@ if __name__ == '__main__':
 
     walls = wall_pattern(9, 9)
     gw = Gridworld(nrows=9, ncols=9, walls=walls, endstates=[8])
-    pts = np.array(gw.states.values())
+    pts = np.array(list(gw.states.values()))
     colors = create_norm_colors(pts)
 
     pylab.scatter(pts[:, 0], pts[:, 1], c=colors)
@@ -101,7 +101,7 @@ if __name__ == '__main__':
     N = gw.neighbors([0, 2, 4, 6])
 
     # base colors on true points
-    pts = np.array(gw.states.values())
+    pts = np.array(list(gw.states.values()))
     colors = create_norm_colors(pts)
 
     # N = expand(N, 20)
@@ -109,7 +109,7 @@ if __name__ == '__main__':
     sol_filename = 'exp_comb/comb.sol'
 
     x, y = np.nonzero(N)
-    indx = zip(x, y)
+    indx = list(zip(x, y))
     size = N.shape[0]
     m = len(indx) + 1
     nblocks = 1
